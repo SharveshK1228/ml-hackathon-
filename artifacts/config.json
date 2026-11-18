@@ -1,0 +1,7 @@
+{
+  "k": 8,
+  "transition_weight": 2.0,
+  "gap_seconds": 12,
+  "model": "random_forest",
+  "surrogate_warning": "All per-point labels/metrics use nearest-reference-road SURROGATE; .route is not timestamp-aligned ground truth. Candidate miss is against this surrogate; do not describe these results as official evaluator performance."
+}

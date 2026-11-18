@@ -9,3 +9,13 @@ reports/exploration/*.html
 reports/exploration/*.csv
 reports/experiments/
 !reports/.gitkeep
+
+# Person 2 training artifacts and outputs
+results/*.png
+results/*.json
+artifacts/*.joblib
+!artifacts/config.json
+
+# Include Person 2 model artifact and run metrics
+!artifacts/model.joblib
+!results/one_model.json
