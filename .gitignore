@@ -9,3 +9,9 @@ reports/exploration/*.html
 reports/exploration/*.csv
 reports/experiments/
 !reports/.gitkeep
+
+# Person 2 training artifacts and outputs
+results/*.png
+results/*.json
+artifacts/*.joblib
+!artifacts/config.json
