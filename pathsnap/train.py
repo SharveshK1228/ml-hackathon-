@@ -1,29 +1,38 @@
 """Five-model group-aware experiment and Bayesian tuning; real recorded results.
 Note: point labels below are nearest-reference surrogate, not independently aligned truth.
+
+Model selection note: these five were chosen after screening TEN classifiers across
+six algorithm families (linear/probabilistic, instance-based, tree, ensemble/bagging,
+boosting, neural network) on this project's actual train/student_test data, ranked
+primarily by grouped (per-trip) cross-validation candidate macro-F1, the same
+leakage-safe criterion used for final selection below. See
+results/ten_model_screen.json and NOTES_model_selection.md for the full 10-model
+comparison and the reasoning behind keeping these five and dropping the other five
+(logistic, naive_bayes, decision_tree, knn, extra_trees).
 """
 import argparse,json,time
 from pathlib import Path
 import numpy as np
 import joblib
-from sklearn.linear_model import LogisticRegression
-from sklearn.naive_bayes import GaussianNB
-from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier,HistGradientBoostingClassifier
+from sklearn.neural_network import MLPClassifier
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GroupKFold
 from sklearn.metrics import f1_score, log_loss,precision_score,recall_score,accuracy_score
 import optuna
+import xgboost as xgb
+import lightgbm as lgb
 from .core import read_trip,make_candidates,features,surrogate_labels,decode
 
 SEED=42
 
 def models():
-    return {'logistic':make_pipeline(StandardScaler(),LogisticRegression(max_iter=400,class_weight='balanced',random_state=SEED)),
-            'naive_bayes':make_pipeline(StandardScaler(),GaussianNB()),
-            'decision_tree':DecisionTreeClassifier(max_depth=9,min_samples_leaf=12,class_weight='balanced',random_state=SEED),
-            'random_forest':RandomForestClassifier(n_estimators=85,max_depth=14,min_samples_leaf=4,n_jobs=-1,class_weight='balanced_subsample',random_state=SEED),
-            'gradient_boosting':HistGradientBoostingClassifier(max_iter=110,max_leaf_nodes=20,l2_regularization=1,random_state=SEED)}
+    return {'random_forest':RandomForestClassifier(n_estimators=85,max_depth=14,min_samples_leaf=4,n_jobs=-1,class_weight='balanced_subsample',random_state=SEED),
+            'lightgbm':lgb.LGBMClassifier(n_estimators=250,max_depth=7,learning_rate=0.07,class_weight='balanced',random_state=SEED,n_jobs=-1,verbosity=-1),
+            'gradient_boosting':HistGradientBoostingClassifier(max_iter=110,max_leaf_nodes=20,l2_regularization=1,random_state=SEED),
+            'xgboost':xgb.XGBClassifier(n_estimators=200,max_depth=6,learning_rate=0.08,subsample=0.9,colsample_bytree=0.9,eval_metric='logloss',random_state=SEED,n_jobs=-1),
+            'mlp':make_pipeline(StandardScaler(),MLPClassifier(hidden_layer_sizes=(64,32),max_iter=400,random_state=SEED,early_stopping=True))}
 
 def dataset(root,partition,per_trip=120,k=8):
     batches=[]
@@ -79,14 +88,14 @@ def main():
         print('MODEL',name,results[name]['cv_mean'],results[name]['student_test']['top1_accuracy'],flush=True)
         Path(args.out,'model_comparison.json').write_text(json.dumps(results,indent=2))
     chosen=max(results,key=lambda key:results[key]['cv_mean'])
-    # Bayes-search a fixed interpretable tree family, except when the chosen
-    # family is logistic/Naive Bayes. Optimisation is explicitly documented.
+    # Bayes-search the chosen family's own hyperparameters. Each of the five
+    # kept families gets its own search space; optimisation is explicitly documented.
     def propose(trial):
-        if chosen=='logistic':return make_pipeline(StandardScaler(),LogisticRegression(C=trial.suggest_float('C',0.01,30,log=True),max_iter=400,class_weight='balanced',random_state=SEED))
-        if chosen=='naive_bayes':return make_pipeline(StandardScaler(),GaussianNB(var_smoothing=trial.suggest_float('var_smoothing',1e-11,1e-5,log=True)))
-        if chosen=='decision_tree':return DecisionTreeClassifier(max_depth=trial.suggest_int('max_depth',4,18),min_samples_leaf=trial.suggest_int('min_samples_leaf',3,45),class_weight='balanced',random_state=SEED)
         if chosen=='random_forest':return RandomForestClassifier(n_estimators=trial.suggest_int('n_estimators',45,125),max_depth=trial.suggest_int('max_depth',6,22),min_samples_leaf=trial.suggest_int('min_samples_leaf',2,18),class_weight='balanced_subsample',random_state=SEED,n_jobs=-1)
-        return HistGradientBoostingClassifier(max_iter=trial.suggest_int('max_iter',50,170),max_leaf_nodes=trial.suggest_int('max_leaf_nodes',8,40),l2_regularization=trial.suggest_float('l2_regularization',0.01,10,log=True),random_state=SEED)
+        if chosen=='lightgbm':return lgb.LGBMClassifier(n_estimators=trial.suggest_int('n_estimators',100,350),max_depth=trial.suggest_int('max_depth',4,12),learning_rate=trial.suggest_float('learning_rate',0.02,0.2,log=True),class_weight='balanced',random_state=SEED,n_jobs=-1,verbosity=-1)
+        if chosen=='gradient_boosting':return HistGradientBoostingClassifier(max_iter=trial.suggest_int('max_iter',50,170),max_leaf_nodes=trial.suggest_int('max_leaf_nodes',8,40),l2_regularization=trial.suggest_float('l2_regularization',0.01,10,log=True),random_state=SEED)
+        if chosen=='xgboost':return xgb.XGBClassifier(n_estimators=trial.suggest_int('n_estimators',100,350),max_depth=trial.suggest_int('max_depth',3,10),learning_rate=trial.suggest_float('learning_rate',0.02,0.2,log=True),subsample=trial.suggest_float('subsample',0.6,1.0),colsample_bytree=trial.suggest_float('colsample_bytree',0.6,1.0),eval_metric='logloss',random_state=SEED,n_jobs=-1)
+        return make_pipeline(StandardScaler(),MLPClassifier(hidden_layer_sizes=(trial.suggest_int('hidden1',16,96),trial.suggest_int('hidden2',8,64)),alpha=trial.suggest_float('alpha',1e-5,1e-1,log=True),max_iter=400,random_state=SEED,early_stopping=True))
     study=optuna.create_study(direction='maximize',sampler=optuna.samplers.TPESampler(seed=SEED))
     study.optimize(lambda trial:float(np.mean(cross_validate(propose(trial),training))),n_trials=args.trials)
     trial=optuna.trial.FixedTrial(study.best_params); tuned=propose(trial);t0=time.perf_counter();tuned.fit(x,y);fit_s=time.perf_counter()-t0
