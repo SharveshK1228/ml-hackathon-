@@ -1,0 +1,377 @@
+{
+  "model": "RandomForestClassifier",
+  "parameters": {
+    "bootstrap": true,
+    "ccp_alpha": 0.0,
+    "class_weight": "balanced_subsample",
+    "criterion": "gini",
+    "max_depth": 16,
+    "max_features": "sqrt",
+    "max_leaf_nodes": null,
+    "max_samples": null,
+    "min_impurity_decrease": 0.0,
+    "min_samples_leaf": 3,
+    "min_samples_split": 2,
+    "min_weight_fraction_leaf": 0.0,
+    "monotonic_cst": null,
+    "n_estimators": 120,
+    "n_jobs": -1,
+    "oob_score": false,
+    "random_state": 42,
+    "verbose": 0,
+    "warm_start": false
+  },
+  "training_trips": [
+    {
+      "trip_id": "00000001",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000002",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000003",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000004",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000005",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000006",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000008",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000010",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000011",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000012",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000013",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000014",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000016",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000018",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000019",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000020",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000021",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000022",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000024",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000025",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000026",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000027",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000028",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000029",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000031",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000032",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000033",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000034",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000035",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000036",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000037",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000038",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000039",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000041",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000042",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000043",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000044",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000045",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000046",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000047",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000048",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000050",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000051",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000053",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000054",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000055",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000057",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000058",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000060",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000061",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000062",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000063",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000064",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000066",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000068",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000069",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000070",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000071",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000072",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000074",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000075",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000078",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000079",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000080",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000081",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000082",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000083",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000084",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000085",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000086",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000088",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000089",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000090",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000092",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000093",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000095",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000096",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000097",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000098",
+      "observations": 60
+    },
+    {
+      "trip_id": "00000099",
+      "observations": 60
+    }
+  ],
+  "training_candidate_rows": 33407,
+  "surrogate_label_definition": "nearest candidate road arc midpoint to each sampled GPS point",
+  "warning": "Route-derived geometric surrogate labels are not timestamp-aligned ground truth; reported scores do not establish official route accuracy.",
+  "group_cv": [
+    {
+      "macro_f1": 0.7209975603144483,
+      "log_loss": 0.3887611706281374
+    },
+    {
+      "macro_f1": 0.7218153230417381,
+      "log_loss": 0.350058746560738
+    },
+    {
+      "macro_f1": 0.7103424174419108,
+      "log_loss": 0.3695498251333468
+    },
+    {
+      "macro_f1": 0.7402460425587128,
+      "log_loss": 0.3367031432171987
+    },
+    {
+      "macro_f1": 0.7211058219144161,
+      "log_loss": 0.3509652086738366
+    }
+  ],
+  "group_cv_macro_f1_mean": 0.7229014330542454,
+  "student_test_agreement_with_nearest_geometry_baseline": 0.7716666666666666,
+  "student_test_note": "Agreement with the deterministic nearest-candidate geometry baseline, not ground truth.",
+  "artifact": "artifacts\\model.joblib",
+  "sampled_observations_per_trip": 60,
+  "radius_m": 120
+}
